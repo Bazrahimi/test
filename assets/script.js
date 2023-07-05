@@ -4,6 +4,7 @@ const btnEl = document.getElementById('searchBtn');
 const titleEl = document.getElementById('title');
 const imgEl = document.getElementById('image');
 const containerEl = document.getElementById('container');
+const noRecipeEl = document.getElementById('NoRecipe');
 
 // Step 3: Add API Key
 const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
@@ -44,6 +45,50 @@ function displayRecipe(data) {
       titleElement.textContent = recipeTitle;
       titleEl.appendChild(titleElement);
     });
+  } else {
+    //display message if no recipe found
+    const NoRecipeMessage = "No recipe found.";
+    noRecipeEl.textContent = NoRecipeMessage;
+
+  };
+};
+
+//Step 6: function to fetch autocomplete suggestion from API
+function fetchAutocomplete(partialInput) {
+  const autocompleteUrl = `https://api.spoonacular.com/recipes/autocomplete?number=5&query=${partialInput}&apiKey=${apiKey}`;
+
+  //GET request using Fetch
+  fetch(autocompleteUrl)
+    .then(response => response.json())
+    .then(function(data) {
+      console.log(data);
+    });
+}
+
+//step 7: Display Autocomplete Suggestion to HTML
+function displayAutocomplete(data) {
+  containerEl.innerHTML = '';
+
+  if (data.length > 0) {
+    data.forEach(recipe => {
+      const recipeTitle =recipe.title
+
+      //Create a suggestion element 
+      const suggestionElement = document.createElement('div');
+      suggestionElement.textContent = recipeTitle;
+      suggestionElement.classList.add('autocomplete-suggestion');
+
+      // Add click event to fill input with suggestion when click
+      suggestionElement.addEventListener('click', function() {
+        inputEl.value = recipeTitle;
+        containerEl.innerHTML = ''; //Clear suggestion after selecting one
+      });
+      containerEl.appendChild(suggestionElement)
+    })
+  } else {
+    const noSuggestions = document.createElement('div');
+    noSuggestions.textContent = 'No suggestion found.';
+    containerEl.appendChild(noSuggestions);
   }
 }
 
@@ -51,4 +96,10 @@ function displayRecipe(data) {
 btnEl.addEventListener('click', function() {
   const userInput = inputEl.value;
   fetchApi(userInput);
+});
+
+inputEl.addEventListener('input', function() {
+  const partialInput = inputEl.value;
+  fetchAutocomplete(partialInput);
+  
 });
