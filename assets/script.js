@@ -1,4 +1,9 @@
-// Step 1: HTML References
+
+
+
+//HTML Element load first
+document.addEventListener('DOMContentLoaded', function() {
+  // Step 1: HTML References
 const inputEl = document.getElementById('ingredients');
 const btnEl = document.getElementById('searchBtn');
 const titleEl = document.getElementById('title');
@@ -105,4 +110,5 @@ inputEl.addEventListener('input', function() {
   const partialInput = inputEl.value;
   fetchAutocomplete(partialInput);
   
+});
 });
