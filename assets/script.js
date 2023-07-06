@@ -12,7 +12,7 @@ const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
 // Step 4: Function to fetch data from API
 function fetchApi(ingredients) {
   //refer to API documentation and test other endpoints or parameters
-  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=3`;
+  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=2`;
 
   // GET request using Fetch
   fetch(url)
@@ -20,6 +20,7 @@ function fetchApi(ingredients) {
     .then(response => response.json())
     .then(function(data) {
       displayRecipe(data);
+      
     });
 }
 
@@ -33,6 +34,7 @@ function displayRecipe(data) {
     data.forEach(recipe => {
       const recipeImg = recipe.image;
       const recipeTitle = recipe.title;
+      
 
       // Create image element
       const imageElement = document.createElement('img');
@@ -55,13 +57,14 @@ function displayRecipe(data) {
 
 //Step 6: function to fetch autocomplete suggestion from API
 function fetchAutocomplete(partialInput) {
-  const autocompleteUrl = `https://api.spoonacular.com/recipes/autocomplete?number=5&query=${partialInput}&apiKey=${apiKey}`;
+  const autocompleteUrl = `https://api.spoonacular.com/food/ingredients/autocomplete?query=${partialInput}&number=5&apiKey=${apiKey}`;
+
 
   //GET request using Fetch
   fetch(autocompleteUrl)
     .then(response => response.json())
     .then(function(data) {
-      console.log(data);
+      displayAutocomplete(data);
     });
 }
 
