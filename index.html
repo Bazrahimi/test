@@ -7,13 +7,31 @@
 </head>
 <body>
   <h1>Search Recipes</h1>
+  <h1>Search Recipes</h1>
   <input id="ingredients" type="text">
   <button id="searchBtn">Search</button>
-  <div id="container">
-    <div id="NoRecipe"></div>
-    <div id="title"></div>
-    <div id="image"></div>
+  <div id="NoRecipe"></div>
+
+
+  <div id="recipeTile">
+    
+    <div id="recipeTitle"></div>
+    <div id="recipeImage"></div>
+    <div id="noRecipeEl"></div> 
+    <!-- Added noRecipeEl element -->
+
+  <div id="recipeModal" >
+    <div id="recipeId" ></div>
+    <div id="recipeMissedIngredientCount" ></div>
+    <div id="recipeMissedIngredients"></div>
+    <div id="recipeUnusedIngredients"></div>
+    <div id="recipeUsedIngredientCount"></div>
+    <div id="recipeUsedIngredient"></div>
+
+
   </div>
+
+
 
   <script src="./assets/script.js" >
     

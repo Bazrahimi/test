@@ -1,114 +1,117 @@
 //HTML Element load first
-document.addEventListener('DOMContentLoaded', function() {
-    // Step 1: HTML References
-  const inputEl = document.getElementById('ingredients');
-  const btnEl = document.getElementById('searchBtn');
-  const titleEl = document.getElementById('title');
-  const imgEl = document.getElementById('image');
-  const containerEl = document.getElementById('container');
-  const noRecipeEl = document.getElementById('NoRecipe');
 
-  // Step 3: Add API Key
-  const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
+  // Step 1: HTML References
+const inputEl = document.getElementById('ingredients');
+const btnEl = document.getElementById('searchBtn');
+const titleEl = document.getElementById('recipeTitle');
+const imgEl = document.getElementById('recipeImage');
+const recipeComponents = document.getElementById('recipeComponents');
+const recipeTile = document.getElementById('recipeTile');
+//References to ImageModal
+const recipeModalEl = document.getElementById('ingredients');
 
-  // Step 4: Function to fetch data from API
-  function fetchApi(ingredients) {
-    //refer to API documentation and test other endpoints or parameters
-    const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=2`;
+// Step 3: Add API Key
+const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
 
-    // GET request using Fetch
-    fetch(url)
-    //the first then get response from the server and changed it into json format
-      .then(response => response.json())
-      .then(function(data) {
-        displayRecipe(data);
-        
-      });
-  }
+// Step 4: Function to fetch data from API
+function fetchApi(ingredients) {
+  //refer to API documentation and test other endpoints or parameters
+  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=2`;
 
-  // Step 5: Display Recipe to HTML
-  function displayRecipe(data) {
-    //
+  // GET request using Fetch
+  fetch(url)
+    .then(response => response.json())
+    .then(function(data) {
+      displayRecipe(data);
+      console.log(data);
+    });
+}
+
+// Step 5: Display Recipe to HTML
+function displayRecipe(data) {
+
+  if (data.length > 0) {
     imgEl.innerHTML = '';
     titleEl.innerHTML = '';
-    //itterate over each element in the data array
-    if (data.length > 0) {
-      data.forEach(recipe => {
-        const recipeImg = recipe.image;
-        const recipeTitle = recipe.title;
-        
+    const recipeContainer = document.getElementById('recipeTile');
+    const recipeModalEl = document.getElementById('recipeModal');
+   
+      
+  
 
-        // Create image element
-        const imageElement = document.createElement('img');
-        imageElement.src = recipeImg;
-        imageElement.alt = recipeTitle;
-          //TODO; I want append imageElement to imgEl. However, nothing is showing in browser. I have double check and made sure that imgEl is referenced to #image in HTML file.
-        imgEl.appendChild(imageElement);
+    data.forEach(recipe => {
+      // Create image element for recipeTile 
+      const imageElement = document.createElement('img');
+      imageElement.src = recipe.image;
+      imageElement.alt = recipe.title;
 
-        // Create title element
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = recipeTitle;
-        //TODO; I want append tittleElement to TitleEl. However, nothing is showing in browser. I have double check and made sure that titleEl is referenced to #title in HTML file.
-        titleEl.appendChild(titleElement);
-      });
-    } else {
-      //display message if no recipe found
-      const NoRecipeMessage = "No recipe found.";
-      noRecipeEl.textContent = NoRecipeMessage;
+      //Create title element for recipeTile
+      const titleElement = document.createElement('h2');
+      titleElement.textContent = recipe.title;
 
-    };
+      //append image and title element to recipeTile
+      recipeTile.appendChild(imageElement);
+      recipeTile.appendChild(titleElement);
+
+      // create elements and append to recipeModal
+      const imageId = document.createElement('p');
+
+      // TODO: I need to create a function to for rest of recipe data to render insede children of recipeModal per their their text matching
+
+      // const recipeModalEl = document.getElementById('recipeModal');
+      // recipeModalEl.innerHTML = '';
+
+      // const recipeId = document.createElement('p');
+      // recipeId.textContent = `ID: ${recipe.id}`;
+
+      // const recipeMissedIngredientCount = document.createElement('p');
+      // recipeMissedIngredientCount.textContent = `Missed Ingredient Count: ${recipe.missedIngredientCount}`;
+
+      // const recipeMissedIngredients = document.createElement('ul');
+      // recipe.missedIngredients.forEach(ingredient => {
+      //   const ingredientItem = document.createElement('li');
+      //   ingredientItem.textContent = ingredient.original;
+      //   recipeMissedIngredients.appendChild(ingredientItem);
+      // });
+
+      // const recipeUnusedIngredients = document.createElement('ul');
+      // recipe.unusedIngredients.forEach(ingredient => {
+      //   const ingredientItem = document.createElement('li');
+      //   ingredientItem.textContent = ingredient.original;
+      //   recipeUnusedIngredients.appendChild(ingredientItem);
+      // });
+
+      // const recipeUsedIngredientCount = document.createElement('p');
+      // recipeUsedIngredientCount.textContent = `Used Ingredient Count: ${recipe.usedIngredientCount}`;
+
+      // const recipeUsedIngredients = document.createElement('ul');
+      // recipe.usedIngredients.forEach(ingredient => {
+      //   const ingredientItem = document.createElement('li');
+      //   ingredientItem.textContent = ingredient.original;
+      //   recipeUsedIngredients.appendChild(ingredientItem);
+      // });
+
+      // recipeModalEl.appendChild(recipeId);
+      // recipeModalEl.appendChild(recipeMissedIngredientCount);
+      // recipeModalEl.appendChild(recipeMissedIngredients);
+      // recipeModalEl.appendChild(recipeUnusedIngredients);
+      // recipeModalEl.appendChild(recipeUsedIngredientCount);
+      // recipeModalEl.appendChild(recipeUsedIngredients);
+    });
+
+
+
+
+  } else {
+    //display message if no recipe found
+    const NoRecipeMessage = "No recipe found.";
+    noRecipeEl.textContent = NoRecipeMessage;
   };
+};
 
-
-  //Step 6: function to fetch autocomplete suggestion from API
-  function fetchAutocomplete(partialInput) {
-    const autocompleteUrl = `https://api.spoonacular.com/food/ingredients/autocomplete?query=${partialInput}&number=5&apiKey=${apiKey}`;
-
-
-    //GET request using Fetch
-    fetch(autocompleteUrl)
-      .then(response => response.json())
-      .then(function(data) {
-        displayAutocomplete(data);
-      });
-  }
-
-  //step 7: Display Autocomplete Suggestion to HTML
-  function displayAutocomplete(data) {
-    containerEl.innerHTML = '';
-
-    if (data.length > 0) {
-      data.forEach(recipe => {
-        const recipeTitle =recipe.title
-
-        //Create a suggestion element 
-        const suggestionElement = document.createElement('div');
-        suggestionElement.textContent = recipeTitle;
-        suggestionElement.classList.add('autocomplete-suggestion');
-
-        // Add click event to fill input with suggestion when click
-        suggestionElement.addEventListener('click', function() {
-          inputEl.value = recipeTitle;
-          containerEl.innerHTML = ''; //Clear suggestion after selecting one
-        });
-        containerEl.appendChild(suggestionElement)
-      })
-    } else {
-      const noSuggestions = document.createElement('div');
-      noSuggestions.textContent = 'No suggestion found.';
-      containerEl.appendChild(noSuggestions);
-    }
-  }
-
-  // Step 2: Add an event listener to the search button
-  btnEl.addEventListener('click', function() {
-    const userInput = inputEl.value;
-    fetchApi(userInput);
-  });
-
-  inputEl.addEventListener('input', function() {
-    const partialInput = inputEl.value;
-    fetchAutocomplete(partialInput);
-    
-  });
+// Step 2: Add an event listener to the search button
+btnEl.addEventListener('click', function() {
+  const userInput = inputEl.value;
+  fetchApi(userInput);
 });
+
