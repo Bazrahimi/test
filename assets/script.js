@@ -1,21 +1,15 @@
-//HTML Element load first
-
-  // Step 1: HTML References
-const inputEl = document.getElementById('ingredients');
-const btnEl = document.getElementById('searchBtn');
-const titleEl = document.getElementById('recipeTitle');
-const imgEl = document.getElementById('recipeImage');
-const recipeComponents = document.getElementById('recipeComponents');
-const recipeTile = document.getElementById('recipeTile');
-//References to ImageModal
-const recipeModalEl = document.getElementById('ingredients');
+// Step 1: HTML References
+const inputEl = document.querySelector('.ingredients');
+const btnEl = document.querySelector('.searchBtn');
+const recipeList = document.querySelector('.recipeList');
+const recipeModal = document.querySelector('.recipeModal');
+const noRecipeMessage = document.querySelector('.noRecipeMessage');
 
 // Step 3: Add API Key
 const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
 
 // Step 4: Function to fetch data from API
 function fetchApi(ingredients) {
-  //refer to API documentation and test other endpoints or parameters
   const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=2`;
 
   // GET request using Fetch
@@ -27,91 +21,76 @@ function fetchApi(ingredients) {
     });
 }
 
-// Step 5: Display Recipe to HTML
+// Step 5: render Recipe
 function displayRecipe(data) {
-
   if (data.length > 0) {
-    imgEl.innerHTML = '';
-    titleEl.innerHTML = '';
-    const recipeContainer = document.getElementById('recipeTile');
-    const recipeModalEl = document.getElementById('recipeModal');
-   
-      
-  
+    recipeList.innerHTML = '';
+    recipeModal.innerHTML = '';
 
     data.forEach(recipe => {
-      // Create image element for recipeTile 
+      // Create image element for recipe
       const imageElement = document.createElement('img');
       imageElement.src = recipe.image;
       imageElement.alt = recipe.title;
 
-      //Create title element for recipeTile
-      const titleElement = document.createElement('h2');
+      // Create title element for recipe
+      const titleElement = document.createElement('h3');
       titleElement.textContent = recipe.title;
 
-      //append image and title element to recipeTile
-      recipeTile.appendChild(imageElement);
-      recipeTile.appendChild(titleElement);
+      // Append image and title elements to recipe
+      const recipeElement = document.createElement('article');
+      recipeElement.appendChild(imageElement);
+      recipeElement.appendChild(titleElement);
 
-      // create elements and append to recipeModal
-      const imageId = document.createElement('p');
+      // Append recipe to recipeList
+      recipeList.appendChild(recipeElement);
 
-      // TODO: I need to create a function to for rest of recipe data to render insede children of recipeModal per their their text matching
+      // Create elements and append to recipeModal
+      const recipeId = document.createElement('p');
+      recipeId.textContent = `ID: ${recipe.id}`;
 
-      // const recipeModalEl = document.getElementById('recipeModal');
-      // recipeModalEl.innerHTML = '';
+      const recipeMissedIngredientCount = document.createElement('p');
+      recipeMissedIngredientCount.textContent = `Missed Ingredient Count: ${recipe.missedIngredientCount}`;
 
-      // const recipeId = document.createElement('p');
-      // recipeId.textContent = `ID: ${recipe.id}`;
+      const recipeMissedIngredients = document.createElement('ul');
+      recipe.missedIngredients.forEach(ingredient => {
+        const ingredientItem = document.createElement('li');
+        ingredientItem.textContent = ingredient.original;
+        recipeMissedIngredients.appendChild(ingredientItem);
+      });
 
-      // const recipeMissedIngredientCount = document.createElement('p');
-      // recipeMissedIngredientCount.textContent = `Missed Ingredient Count: ${recipe.missedIngredientCount}`;
+      const recipeUnusedIngredients = document.createElement('ul');
+      recipe.unusedIngredients.forEach(ingredient => {
+        const ingredientItem = document.createElement('li');
+        ingredientItem.textContent = ingredient.original;
+        recipeUnusedIngredients.appendChild(ingredientItem);
+      });
 
-      // const recipeMissedIngredients = document.createElement('ul');
-      // recipe.missedIngredients.forEach(ingredient => {
-      //   const ingredientItem = document.createElement('li');
-      //   ingredientItem.textContent = ingredient.original;
-      //   recipeMissedIngredients.appendChild(ingredientItem);
-      // });
+      const recipeUsedIngredientCount = document.createElement('p');
+      recipeUsedIngredientCount.textContent = `Used Ingredient Count: ${recipe.usedIngredientCount}`;
 
-      // const recipeUnusedIngredients = document.createElement('ul');
-      // recipe.unusedIngredients.forEach(ingredient => {
-      //   const ingredientItem = document.createElement('li');
-      //   ingredientItem.textContent = ingredient.original;
-      //   recipeUnusedIngredients.appendChild(ingredientItem);
-      // });
+      const recipeUsedIngredients = document.createElement('ul');
+      recipe.usedIngredients.forEach(ingredient => {
+        const ingredientItem = document.createElement('li');
+        ingredientItem.textContent = ingredient.original;
+        recipeUsedIngredients.appendChild(ingredientItem);
+      });
 
-      // const recipeUsedIngredientCount = document.createElement('p');
-      // recipeUsedIngredientCount.textContent = `Used Ingredient Count: ${recipe.usedIngredientCount}`;
-
-      // const recipeUsedIngredients = document.createElement('ul');
-      // recipe.usedIngredients.forEach(ingredient => {
-      //   const ingredientItem = document.createElement('li');
-      //   ingredientItem.textContent = ingredient.original;
-      //   recipeUsedIngredients.appendChild(ingredientItem);
-      // });
-
-      // recipeModalEl.appendChild(recipeId);
-      // recipeModalEl.appendChild(recipeMissedIngredientCount);
-      // recipeModalEl.appendChild(recipeMissedIngredients);
-      // recipeModalEl.appendChild(recipeUnusedIngredients);
-      // recipeModalEl.appendChild(recipeUsedIngredientCount);
-      // recipeModalEl.appendChild(recipeUsedIngredients);
+      recipeModal.appendChild(recipeId);
+      recipeModal.appendChild(recipeMissedIngredientCount);
+      recipeModal.appendChild(recipeMissedIngredients);
+      recipeModal.appendChild(recipeUnusedIngredients);
+      recipeModal.appendChild(recipeUsedIngredientCount);
+      recipeModal.appendChild(recipeUsedIngredients);
     });
-
-
-
-
   } else {
-    //display message if no recipe found
-    const NoRecipeMessage = "No recipe found.";
-    noRecipeEl.textContent = NoRecipeMessage;
-  };
-};
+    // Display message if no recipe found
+    noRecipeMessage.textContent = "No recipe found.";
+  }
+}
 
 // Step 2: Add an event listener to the search button
 btnEl.addEventListener('click', function() {
   const userInput = inputEl.value;
   fetchApi(userInput);
 });
-

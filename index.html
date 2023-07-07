@@ -6,35 +6,32 @@
   <title>Fetch Practice</title>
 </head>
 <body>
-  <h1>Search Recipes</h1>
-  <h1>Search Recipes</h1>
-  <input id="ingredients" type="text">
-  <button id="searchBtn">Search</button>
-  <div id="NoRecipe"></div>
+  <header>
+    <h1>Search Recipes</h1>
+    <input class="ingredients" type="text">
+    <button class="searchBtn">Search</button>
+    <p class="noRecipeMessage"></p>
+  </header>
 
+  <section class="recipeContainer">
+    <h2>Recipes Title and Image</h2>
+    <div class="recipeList"></div>
+  </section>
 
-  <div id="recipeTile">
-    
-    <div id="recipeTitle"></div>
-    <div id="recipeImage"></div>
-    <div id="noRecipeEl"></div> 
-    <!-- Added noRecipeEl element -->
+  <section class="recipeModal">
+    <h2>Recipe Details</h2>
+    <div class="recipeId"></div>
+    <div class="recipeMissedIngredientCount"></div>
+    <ul class="recipeMissedIngredients"></ul>
+    <ul class="recipeUnusedIngredients"></ul>
+    <div class="recipeUsedIngredientCount"></div>
+    <ul class="recipeUsedIngredients"></ul>
+  </section>
 
-  <div id="recipeModal" >
-    <div id="recipeId" ></div>
-    <div id="recipeMissedIngredientCount" ></div>
-    <div id="recipeMissedIngredients"></div>
-    <div id="recipeUnusedIngredients"></div>
-    <div id="recipeUsedIngredientCount"></div>
-    <div id="recipeUsedIngredient"></div>
+  <footer>
 
+  </footer>
 
-  </div>
-
-
-
-  <script src="./assets/script.js" >
-    
-  </script>
+  <script src="./assets/script.js"></script>
 </body>
 </html>
