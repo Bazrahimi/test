@@ -3,23 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fetch Practice</title>
+  <title>Dinner Delights</title>
+  <link rel="stylesheet" href="../css/recipe.css">
+
+ <style>
+  .suggestionsContainer {
+  position: relative;
+}
+
+.suggestionsList {
+  position: absolute;
+  z-index: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.suggestionsList li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestionsList li:hover {
+  background-color: #f2f2f2;
+}
+
+.modalBackdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+.modalContent {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+
+.modalContent h2 {
+  margin-top: 0;
+}
+
+.modalContent .closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modalContent .closeBtn:hover {
+  color: #f00;
+}
+ </style>
 </head>
 <body>
   <header>
     <h1>Search Recipes</h1>
+    <div class="selectedIngredients"></div>
+
     <input class="ingredients" type="text">
+    <ul class="suggestionsList"></ul>
     <button class="searchBtn">Search</button>
+  
     <p class="noRecipeMessage"></p>
   </header>
 
-  <section class="recipeContainer">
-    <h2>Recipes Title and Image</h2>
+  <h3></h3>
+
+  <section 
+  class="recipeContainer">
+  <!-- Recipes Title and Image -->
+    <h2></h2>
     <div class="recipeList"></div>
   </section>
 
   <section class="recipeModal">
-    <h2>Recipe Details</h2>
+    <!-- Recipe Details -->
+    <h2></h2>
     <div class="recipeId"></div>
     <div class="recipeLikes"></div>
     <div class="recipeMissedIngredientCount"></div>
@@ -32,6 +108,22 @@
   <footer>
 
   </footer>
+
+
+  <div class="modalBackdrop"></div>
+
+  <div class="modalContent">
+    <span class="closeBtn">&times;</span>
+    <!-- create span for favourite -->
+    <h2></h2>
+    <div class="recipeId"></div>
+    <div class="recipeLikes"></div>
+    <div class="recipeMissedIngredientCount"></div>
+    <ul class="recipeMissedIngredients"></ul>
+    <ul class="recipeUnusedIngredients"></ul>
+    <div class="recipeUsedIngredientCount"></div>
+    <ul class="recipeUsedIngredients"></ul>
+  </div>
 
   <script src="./assets/script.js"></script>
 </body>
