@@ -4,24 +4,30 @@ const btnEl = document.querySelector('.searchBtn');
 const recipeList = document.querySelector('.recipeList');
 const recipeModal = document.querySelector('.recipeModal');
 const noRecipeMessage = document.querySelector('.noRecipeMessage');
+const showRecipeBtn = document.querySelector('.showRecipe');
+const favoriteRecipeBtn = document.querySelector('.favoriteRecipes')
+
 
 // Step 3: Add API Key
 const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
 
+//Global Variable
+let recipeData = [];
+
 // Step 4: Function to fetch data from API
 function fetchRecipe(ingredients) {
-  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=2`;
+  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}&number=3`;
 
   // GET request using Fetch
   fetch(url)
     .then(response => response.json())
     .then(function(data) {
+      recipeData = data;
       displayRecipe(data);
     });
 }
 
 // Step 5: render Recipe
-// consider deleting some after adding it to the modal
 function displayRecipe(data) {
   if (data.length > 0) {
     recipeList.innerHTML = '';
@@ -42,7 +48,15 @@ function displayRecipe(data) {
       recipeElement.appendChild(imageElement);
       recipeElement.appendChild(titleElement);
 
-      // Append recipe to recipeList
+      // Create "Show Recipe" button
+      const showRecipeButton = document.createElement('button');
+      showRecipeButton.textContent = 'Show Recipe';
+      showRecipeButton.addEventListener('click', function() {
+        showRecipeModal(recipe.id);
+      });
+
+      // Append recipe and button to recipeList
+      recipeElement.appendChild(showRecipeButton);
       recipeList.appendChild(recipeElement);
 
       // Create elements and append to recipeModal
@@ -111,116 +125,7 @@ function displayRecipe(data) {
     noRecipeMessage.textContent = "No recipe found.";
   }
 }
-
-//step 6: Recipe Modal
-const modalBackdrop = document.querySelector('.modalBackdrop');
-const modalContent = document.querySelector('.modalContent');
-const closeBtn = document.querySelector('.closeBtn');
-//create button for favourite
-
-function openModal(recipe) {
-  modalContent.innerHTML = '';
-
-  //create elements and append to modalContenet
-  const recipeTitle = document.createElement('h2');
-  recipeTitle.textContent = recipe.title;
-
-  const recipeId = document.createElement('div');
-  recipeId.textContent = `ID:   ${recipe.id}`;
-
-  const recipeLikes = document.createElement('div');
-  recipeLikes.innerHTML = `Likes:   ${recipe.likes}`
-
-  const recipeMissedIngredientCount = document.createElement('div');
-  recipeMissedIngredientCount.textContent = `Missed Ingredient Count: ${recipe.missedIngredientCount}`;
-
-  const recipeMissedIngredients = document.createElement('ul');
-  recipe.missedIngredients.forEach(ingredient => {
-    const ingredientItem = document.createElement('li');
-    ingredientItem.textContent = ingredient.original;
-
-    const ingredientImage = document.createElement('img');
-    ingredientImage.src = ingredient.image;
-    ingredientImage.alt = ingredient.name;
-    ingredientItem.appendChild(ingredientImage);
-
-    recipeMissedIngredients.appendChild(ingredientItem);
-  });
-
-  const recipeUnusedIngredients = document.createElement('ul');
-  recipe.unusedIngredients.forEach(ingredient => {
-    const ingredientItem = document.createElement('li');
-    ingredientItem.textContent = ingredient.original;
-
-    const ingredientImage = document.createElement('img');
-    ingredientImage.src = ingredient.image;
-    ingredientImage.alt = ingredient.name;
-    ingredientItem.appendChild(ingredientImage);
-
-    recipeUnusedIngredients.appendChild(ingredientItem);
-  });
-
-  const recipeUsedIngredientCount = document.createElement('div');
-  recipeUsedIngredientCount.textContent = `Used Ingredient Count: ${recipe.usedIngredientCount}`;
-
-  const recipeUsedIngredients = document.createElement('ul');
-  recipe.usedIngredients.forEach(ingredient => {
-    const ingredientItem = document.createElement('li');
-    ingredientItem.textContent = ingredient.original;
-
-    const ingredientImage = document.createElement('img');
-    ingredientImage.src = ingredient.image;
-    ingredientImage.alt = ingredient.name;
-    ingredientItem.appendChild(ingredientImage);
-
-    recipeUsedIngredients.appendChild(ingredientItem);
-  });
-
-  modalContent.appendChild(recipeTitle);
-  modalContent.appendChild(recipeId);
-  modalContent.appendChild(recipeLikes);
-  modalContent.appendChild(recipeMissedIngredientCount);
-  modalContent.appendChild(recipeMissedIngredients);
-  modalContent.appendChild(recipeUnusedIngredients);
-  modalContent.appendChild(recipeUsedIngredientCount);
-  modalContent.appendChild(recipeUsedIngredients);
-
-  modalBackdrop.style.display = 'block';
-  
-
-};
-
-// close Modal
-function closeModal() {
-  modalBackdrop.style.display = 'none';
-  
-};
-
-//close modalContenet when button span is clicked
-closeBtn.addEventListener('click', closeModal);
-
-//close modalcontenet when I click outside of modal
-modalBackdrop.addEventListener('click', function(event) {
-if (event.target === modalBackdrop) {
-  closeModal();
-}
-});
-
-//Open modal when clicking on a recipe image
-recipeList.addEventListener('click', function(event) {
-  //the code first check if clicked element is child of img within the recipeList.
-  const recipeImage = event.target.closest('img');
-  if (recipeImage) {
-    // if recipeImage is truthy it will retrieve parent element
-    const recipeElement = recipeImage.parentElement;
-    const recipeIndex = Array.from(recipeList.children).indexOf(recipeElement);
-    const recipeData = data[recipeIndex];
-    openModal(recipeData);
-  }
-});
-
-
-
+//selected ingredient chosen by users
 
 
 function fetchIngredientSuggestions(query) {
@@ -291,6 +196,168 @@ inputEl.addEventListener('click', function() {
   
   fetchIngredientSuggestions(query);
 });
+
+
+
+function showRecipeModal(recipeId) {
+  const selectedRecipe = recipeData.find(recipe => recipe.id === recipeId);
+
+  if (selectedRecipe) {
+    recipeModal.style.display = 'block';
+    recipeModal.innerHTML = '';
+
+    //create close button
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Close';
+    closeBtn.addEventListener('click', function() {
+      recipeModal.style.display = 'none';
+    });
+    recipeModal.appendChild(closeBtn);
+
+    const likeBtn = document.createElement('button');
+    likeBtn.textContent = 'Like';
+    likeBtn.addEventListener('click', function() {
+      //safe selected recipe to localStroge 
+      addToFavorites(selectedRecipe);
+      likeBtn.textContent = 'Liked';
+      likeBtn.style.backgroundColor = 'green';
+
+    });
+
+    recipeModal.appendChild(likeBtn);
+
+    const recipeTitle = document.createElement('h2');
+    recipeTitle.textContent = selectedRecipe.title;
+    recipeModal.appendChild(recipeTitle);
+
+    const recipeIdElement = document.createElement('div');
+    recipeIdElement.textContent = `ID: ${selectedRecipe.id}`;
+    recipeModal.appendChild(recipeIdElement);
+
+    const recipeLikes = document.createElement('div');
+    recipeLikes.textContent = `Likes: ${selectedRecipe.likes}`;
+    recipeModal.appendChild(recipeLikes);
+
+    const recipeMissedIngredientCount = document.createElement('div');
+    recipeMissedIngredientCount.textContent = `Missed Ingredient Count: ${selectedRecipe.missedIngredientCount}`;
+    recipeModal.appendChild(recipeMissedIngredientCount);
+
+    const recipeMissedIngredients = document.createElement('ul');
+    selectedRecipe.missedIngredients.forEach(ingredient => {
+      const ingredientItem = document.createElement('li');
+      ingredientItem.textContent = ingredient.original;
+
+      const ingredientImage = document.createElement('img');
+      ingredientImage.src = ingredient.image;
+      ingredientImage.alt = ingredient.name;
+      ingredientItem.appendChild(ingredientImage);
+
+      recipeMissedIngredients.appendChild(ingredientItem);
+    });
+    recipeModal.appendChild(recipeMissedIngredients);
+
+    const recipeUnusedIngredients = document.createElement('ul');
+    selectedRecipe.unusedIngredients.forEach(ingredient => {
+      const ingredientItem = document.createElement('li');
+      ingredientItem.textContent = ingredient.original;
+
+      const ingredientImage = document.createElement('img');
+      ingredientImage.src = ingredient.image;
+      ingredientImage.alt = ingredient.name;
+      ingredientItem.appendChild(ingredientImage);
+
+      recipeUnusedIngredients.appendChild(ingredientItem);
+    });
+    recipeModal.appendChild(recipeUnusedIngredients);
+
+    const recipeUsedIngredientCount = document.createElement('div');
+    recipeUsedIngredientCount.textContent = `Used Ingredient Count: ${selectedRecipe.usedIngredientCount}`;
+    recipeModal.appendChild(recipeUsedIngredientCount);
+
+    const recipeUsedIngredients = document.createElement('ul');
+    selectedRecipe.usedIngredients.forEach(ingredient => {
+      const ingredientItem = document.createElement('li');
+      ingredientItem.textContent = ingredient.original;
+
+      const ingredientImage = document.createElement('img');
+      ingredientImage.src = ingredient.image;
+      ingredientImage.alt = ingredient.name;
+      ingredientItem.appendChild(ingredientImage);
+
+      recipeUsedIngredients.appendChild(ingredientItem);
+    });
+    recipeModal.appendChild(recipeUsedIngredients);
+
+
+  } else {
+    recipeModal.style.display = 'none';
+  }
+}
+
+//save Selected Recipe to LocalStorage and Favourite
+function addToFavorites(recipe) {
+  const favorite = getFavoriteFromStorege();
+
+  //check if the selected recipe already exist
+  if (favorite.some(favorite => favorite.id === recipe.id)) {
+    return; // if recipe already exit, nothing will be done.
+  }
+  favorite.push(recipe);
+  saveFavoriteToStorage(favorite);
+};
+
+//function to bet favourite from localSroge
+function getFavoriteFromStorege() {
+  const favoritesJSON = localStorage.getItem('favorites');
+  return favoritesJSON? JSON.parse(favoritesJSON):[];
+};
+
+//function to save to localStroge
+function saveFavoriteToStorage(favorites) {
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+};
+
+
+//  add event listener to the favoriteRecipes element
+ favoriteRecipeBtn.addEventListener('click', function() {
+  displayFavoriteRecipes();
+ });
+
+ function displayFavoriteRecipes() {
+  recipeList.innerHTML = '';
+  const favoriteRecipes = getFavoriteFromStorege();
+
+  if (favoriteRecipes.length > 0) {
+    favoriteRecipes.forEach(recipe => {
+      const recipeElement = document.createElement('article');
+      recipeElement.dataset.recipeId = recipe.id;
+
+      const imageElement = document.createElement('img');
+      imageElement.src = recipe.image;
+      imageElement.alt = recipe.title;
+
+      const titleElement = document.createElement('h3');
+      titleElement.textContent = recipe.title;
+
+      const showRecipeButton = document.createElement('button');
+      showRecipeButton.textContent = 'Show Recipe';
+      showRecipeButton.addEventListener('click', function() {
+        showRecipeModal(recipe.id);
+      });
+
+      recipeElement.appendChild(imageElement);
+      recipeElement.appendChild(titleElement);
+      recipeElement.appendChild(showRecipeButton);
+      recipeList.appendChild(recipeElement);
+    });
+  } else {
+    noRecipeMessage.textContent = 'No favorite recipes found.';
+  }
+}
+
+
+
+
 
 
 

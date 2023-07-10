@@ -4,14 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dinner Delights</title>
-  <link rel="stylesheet" href="./assets/style.css">
-
- <style>
- 
- </style>
+  <link rel="stylesheet" href="../css/recipe.css">
+  <style>
+  
+  </style>
 </head>
 <body>
   <header>
+    <div class="favoriteRecipes"> Favorite-Recipes</div>
+
+ 
+  </header>
+
+  <Section>
     <h1>Search Recipes</h1>
     <div class="selectedIngredients"></div>
 
@@ -20,7 +25,7 @@
     <button class="searchBtn">Search</button>
   
     <p class="noRecipeMessage"></p>
-  </header>
+  </Section>
 
   <h3></h3>
 
@@ -29,6 +34,7 @@
   <!-- Recipes Title and Image -->
     <h2></h2>
     <div class="recipeList"></div>
+    
   </section>
 
   <section class="recipeModal">
@@ -47,22 +53,6 @@
 
   </footer>
 
-
-  <div class="modalBackdrop"></div>
-
-  <div class="modalContent">
-    <span class="closeBtn">&times;</span>
-    <!-- create span for favourite -->
-    <h2></h2>
-    <div class="recipeId"></div>
-    <div class="recipeLikes"></div>
-    <div class="recipeMissedIngredientCount"></div>
-    <ul class="recipeMissedIngredients"></ul>
-    <ul class="recipeUnusedIngredients"></ul>
-    <div class="recipeUsedIngredientCount"></div>
-    <ul class="recipeUsedIngredients"></ul>
-  </div>
-
-  <script src="./assets/script.js"></script>
+  <script src="../js/script.js"></script>
 </body>
 </html>
