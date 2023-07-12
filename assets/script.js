@@ -11,7 +11,7 @@ const includeSelectedCheckbox = document.querySelector('.includeOnly');
 const selectYourIngredient = document.querySelector('.selectYourIngredient');
 
 // Step 3: Add API Key
-const apiKey = "54f091c799fb4297951a2a1ca21cf29f";
+const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
 
 //Global Variable
 let recipeData = [];
@@ -148,7 +148,7 @@ function displaySelectedIngredients() {
     noRecipeMessage.textContent = '';
     selectYourIngredient.style.color = 'darkblue';
   } else {
-    selectYourIngredient.textContent = 'Check to minimize ingredients other than those selected.';
+    selectYourIngredient.textContent = '\u2713 the box to get recipe based on Selected Ingredients';
     selectYourIngredient.style.color = 'darkgreen';
     noRecipeMessage.textContent = '';
   }
