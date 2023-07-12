@@ -1,3 +1,31 @@
+.title, 
+.subtitle {
+  text-align: center;
+}
+
+.navbar {
+  display:flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.selectYourIngredient {
+  text-align: left;
+  margin-left: 50px;
+}
+
+span {
+  margin-left: 30px;
+}
+
+.noRecipeMessage {
+  color: blue;
+}
+
+.input-container {
+  position: relative;
+}
+
 .suggestionsContainer {
   position: relative;
 }
@@ -21,8 +49,40 @@
 .suggestionsList li:hover {
   background-color: #f2f2f2;
 }
+
 .hide-element {
   display: none;
+}
+
+.ignorePantryMessage {
+  color: red;
+  font-size: 14px;
+  margin-left: 100px;
+}
+
+.card {
+  padding: 0px;
+}
+
+.recipeList .card .title {
+  font-size: 10px;
+}
+
+.content {
+  padding: 0px;
+}
+
+.card .button {
+  align-items: center !important;
+  font-size: 12px;
+  padding: 10px;
+  margin: 0px;
+}
+
+.recipe-title {
+  font-size: 13px !important;
+  text-align: center !important;
+  margin-top: 2px !important;
 }
 
 .recipeModal {
@@ -31,19 +91,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(243, 220, 220, 0.1);
+  background-color: black;
   padding: 50px;
   border-radius: 5px;
   z-index: 1;
   height: 1000px;
   overflow-y: auto;
   padding-bottom: 400px;
-  margin-top: 200px;
+  margin-top: 300px;
+  opacity: 0px;
   border-radius: 50px;
-  
+  text-align: center;
+  color: white;
 }
 
- .like-btn {
+.like-btn {
   position: absolute;
   margin-top: -10px;
   font-weight: bolder;
@@ -61,19 +123,22 @@
 }
 
 .close-btn {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  transform: translate(-50%, 50%);
-  font-weight: bolder;
-  padding: 5px;
+  display: block;
+  margin: 0 auto;
+  font-weight: bold;
+  padding: 5px 10px;
   background-color: #f44336;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  text-align: center;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-top: 50px;
+  font-weight: bolder;
+  font-size: larger;
 }
-
 
 /* Custom styling for scroll bar */
 .recipeModal::-webkit-scrollbar {
@@ -105,5 +170,3 @@
     max-width: 800px;
   }
 }
-
-
