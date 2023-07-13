@@ -176,7 +176,7 @@ span {
 @media screen and (max-width: 767px) {
   .recipeModal {
     display: none;
-    width: 60vh;
+    width: 50vh;
     margin: auto;
     align-items: center;
     margin-top: 10px;
