@@ -11,7 +11,7 @@ const includeSelectedCheckbox = document.querySelector('.includeOnly');
 const selectYourIngredient = document.querySelector('.selectYourIngredient');
 
 // Step 3: Add API Key
-const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
+const apiKey = "768e4e166053486abcc4bb15e1e1c9e7";
 
 //Global Variable
 let recipeData = [];
@@ -235,11 +235,11 @@ function showRecipeModal(recipeId) {
 
     const likeBtn = document.createElement('button');
     likeBtn.classList.add('button', 'is-link', 'is-rounded', 'like-btn', 'right');
-    likeBtn.textContent = 'Like';
+    likeBtn.textContent = 'Save';
     likeBtn.addEventListener('click', function() {
       // Save selected recipe to localStorage 
       addToFavorites(selectedRecipe);
-      likeBtn.textContent = 'Liked';
+      likeBtn.textContent = 'Saved';
       likeBtn.style.backgroundColor = 'green';
     });
 
@@ -384,7 +384,7 @@ function displayFavoriteRecipes() {
       recipeList.appendChild(recipeElement);
     });
   } else {
-    noRecipeMessage.textContent = 'No favorite recipes found. You have not liked any recipes yet.';
+    noRecipeMessage.textContent = 'No favorite recipes found. You have not saved any recipes yet.';
   }
 }
 
