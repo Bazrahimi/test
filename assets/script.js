@@ -35,6 +35,7 @@ function fetchRecipe(ingredients, ranking, ignorePantry) {
 function displayRecipe(data) {
   if (data.length > 0) {
     recipeList.innerHTML = '';
+    recipeModal.style.display = 'none';
 
     data.forEach(recipe => {
       // Create recipe card
@@ -315,7 +316,6 @@ function showRecipeModal(recipeId) {
     closeBtn.classList.add('close-btn');
     closeBtn.addEventListener('click', function() {
       recipeModal.style.display = 'none';
-      recipeContainer.classList.remove('hide-element');
     });
     recipeModal.appendChild(closeBtn);
 
