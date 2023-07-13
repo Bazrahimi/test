@@ -11,7 +11,7 @@ const includeSelectedCheckbox = document.querySelector('.includeOnly');
 const selectYourIngredient = document.querySelector('.selectYourIngredient');
 
 // Step 3: Add API Key
-const apiKey = "768e4e166053486abcc4bb15e1e1c9e7";
+const apiKey = "8734635d4cfc4d00bb8e0e29263ce8f2";
 
 //Global Variable
 let recipeData = [];
@@ -30,6 +30,7 @@ function fetchRecipe(ingredients, ranking, ignorePantry) {
     });
 }
 
+// Step 5: render Recipe
 // Step 5: render Recipe with Instructions
 function displayRecipe(data) {
   if (data.length > 0) {
@@ -123,6 +124,7 @@ function fetchIngredientSuggestions(query) {
 function displayIngredientSuggestion(data) {
   const suggestionsList = document.querySelector('.suggestionsList');
   suggestionsList.innerHTML = "";
+
   const popularIngredients = ['chicken', 'beef', 'pasta', 'rice', 'tomatoes'];
 
   //clear the popularIngredients when user engage with inputEl.
@@ -166,7 +168,6 @@ function displaySelectedIngredients() {
   selectedIngredients.forEach(ingredient => {
     const ingredientItem = document.createElement('span');
     ingredientItem.textContent += `${ingredient}, `;
-
     selectedIngredientContainer.appendChild(ingredientItem);
   });
 
@@ -221,7 +222,6 @@ inputEl.addEventListener('input', function() {
 // Add event listener to input click
 inputEl.addEventListener('click', function() {
   const query = inputEl.value;
-  
   fetchIngredientSuggestions(query);
 });
 
@@ -264,12 +264,10 @@ function showRecipeModal(recipeId) {
     selectedRecipe.missedIngredients.forEach(ingredient => {
       const ingredientItem = document.createElement('li');
       ingredientItem.textContent = ingredient.original;
-
       const ingredientImage = document.createElement('img');
       ingredientImage.src = ingredient.image;
       ingredientImage.alt = ingredient.name;
       ingredientItem.appendChild(ingredientImage);
-
       recipeMissedIngredients.appendChild(ingredientItem);
     });
     recipeModal.appendChild(recipeMissedIngredients);
@@ -278,12 +276,10 @@ function showRecipeModal(recipeId) {
     selectedRecipe.unusedIngredients.forEach(ingredient => {
       const ingredientItem = document.createElement('li');
       ingredientItem.textContent = ingredient.original;
-
       const ingredientImage = document.createElement('img');
       ingredientImage.src = ingredient.image;
       ingredientImage.alt = ingredient.name;
       ingredientItem.appendChild(ingredientImage);
-
       recipeUnusedIngredients.appendChild(ingredientItem);
     });
     recipeModal.appendChild(recipeUnusedIngredients);
@@ -296,12 +292,10 @@ function showRecipeModal(recipeId) {
     selectedRecipe.usedIngredients.forEach(ingredient => {
       const ingredientItem = document.createElement('li');
       ingredientItem.textContent = ingredient.original;
-
       const ingredientImage = document.createElement('img');
       ingredientImage.src = ingredient.image;
       ingredientImage.alt = ingredient.name;
       ingredientItem.appendChild(ingredientImage);
-
       recipeUsedIngredients.appendChild(ingredientItem);
     });
     recipeModal.appendChild(recipeUsedIngredients);
@@ -323,13 +317,12 @@ function showRecipeModal(recipeId) {
       recipeModal.style.display = 'none';
       recipeContainer.classList.remove('hide-element');
     });
-
     recipeModal.appendChild(closeBtn);
 
+    // Append the recipeModal to the document body
+    document.body.appendChild(recipeModal);
   } else {
     recipeModal.style.display = 'none';
-
-    // Show other elements
     recipeContainer.classList.remove('hide-element');
   }
 }
@@ -342,6 +335,7 @@ function addToFavorites(recipe) {
   if (favorite.some(favorite => favorite.id === recipe.id)) {
     return; // If recipe already exists, do nothing.
   }
+
   favorite.push(recipe);
   saveFavoriteToStorage(favorite);
 }
@@ -394,9 +388,9 @@ function displayFavoriteRecipes() {
   }
 }
 
-
 // Retrieve ingredients from localStorage and fetch recipe
-const storedIngredients = localStorage.getItem("ingredients");
+const storedIngredients = localStorage.getItem('ingredients');
+
 if (storedIngredients) {
   const userInput = JSON.parse(storedIngredients);
   fetchRecipe(userInput);
