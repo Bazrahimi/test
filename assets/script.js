@@ -392,6 +392,8 @@ function displayFavoriteRecipes() {
 const storedIngredients = localStorage.getItem('ingredients');
 
 if (storedIngredients) {
-  const userInput = JSON.parse(storedIngredients);
-  fetchRecipe(userInput);
+  const userIngredients = JSON.parse(storedIngredients);
+	let ranking = 1;
+	let ignorePantry = false;
+  fetchRecipe(userIngredients, ranking, ignorePantry);
 }
